@@ -34,7 +34,7 @@ Todo.getAll = result => {
             result(err, null);
             return
         }else{
-            console.log("Todos: ", res);
+            console.log("Model: Todos requested: ", res);
             result(null, res);
         }
     });
