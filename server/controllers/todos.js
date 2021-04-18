@@ -54,3 +54,16 @@ exports.findOne = (req, res) => {
         }
     });
 }
+
+exports.delete = (req, res) => {
+
+    Todo.remove(req.params.id, (err, data) => {
+        if(err){
+            res.status().send(err.message); 
+        }else{
+            res.send({
+                message: 'Customer Successfully Deleted'
+            }); 
+        } 
+    }); 
+}

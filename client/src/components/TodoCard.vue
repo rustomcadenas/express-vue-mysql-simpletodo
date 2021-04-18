@@ -4,7 +4,7 @@
             <h1>Todo List</h1>
         </div>
 
-        <div v-for="todo in Todos" v-bind:key="todo.id" class="mb-4">
+        <div v-for="todo in todos" v-bind:key="todo.id" class="mb-4">
             <div class="justify-center px-8">
                 <div class="shadow w-full p-2 px-4 rounded border-green-200 border space-y-1">
                     <div class="flex justify-between">
@@ -18,38 +18,56 @@
                     </div>  
                     <hr class="border border-green-200">
                     <div class="flex justify-between space-x-2 p-2">
-                        <button>
+                        <button @click="deleteTodo(todo.id)">
                             <img class="h-6 opacity-80 hover:opacity-100" src="icons/red-remove.svg">
                         </button>
                         <button>
                             <img class="h-6 opacity-80 hover:opacity-100" src="icons/green-checked.svg" alt="">
                         </button>
-                    </div>
-                    
+                    </div> 
                 </div>  
             </div>  
+        </div> 
+
+        <div v-if="!todos.length">
+            <div class="w-full flex text-center justify-center">
+                <div class="bg-green-200 py-2 w-96">
+                    <h1 class="text-red-400">No Todo</h1>
+                </div>
+            </div>
         </div> 
     </div>
 </template>
 
-<script setup>
-    import axios from 'axios';
-    import { ref, onMounted } from 'vue';
-
-    const Todos = ref();
-    const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
+<script>
+    import { toRefs  } from 'vue';
 
 
-    const getTodos = async () => {
-        Todos.value = await axios.get('http://localhost:3030/todos').then((response) => response.data);
+    export default{ 
+        props: {
+            todos:{
+                type: Object,
+                required: true
+            }
+        },
 
-    };
+        setup(props, {emit}){ 
 
-    onMounted(() => {
-        getTodos();
+            const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
+            
+            const deleteTodo = (todoID) => {
+                emit('delete-todo', todoID);
+            }
 
-    });
+            return{
+               options,
+               deleteTodo
+            }
+        }
+    }
 
+   
+ 
 </script>
 
 <style>

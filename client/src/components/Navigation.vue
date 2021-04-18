@@ -13,10 +13,7 @@
     <router-view />
 </div>
 </template>
-
-<script setup>
-
-</script>
+ 
 
 <style scoped lang="postcss">
     a {

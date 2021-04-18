@@ -61,5 +61,29 @@ Todo.getOne = (id, result) => {
     });
 }
 
+Todo.remove = (todoID, result) => {
+    const query = `
+        delete from todos where id = ?
+    `;
+    sql.query(query, todoID, (err, res) => {
+        if(err){
+            console.log(`Error: ${error}`);
+            result(err, null);
+            return;
+        }
+        if(res.affectedRows == 0){
+            console.log(`Error: Todo not found`);
+            result({ 
+                message: 'Todo not found'
+            }, null);
+            return
+        }else{
+            console.log(`Customer Successfully Deleted ${todoID}`);
+            result(null, res);
+            return
+        }
+    })
+}
+
 
 module.exports = Todo;

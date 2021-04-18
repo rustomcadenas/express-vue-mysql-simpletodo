@@ -6,10 +6,18 @@
 </div>
 </template>
 
-<script setup>
-    import navigation from './components/Navigation.vue'
+<script>
+    import navigation from './components/Navigation.vue';
+    export default{
+        components:{
+            navigation
+        }
+    }
+    
 </script>
 
-<style>
-
+<style lang="postcss">
+    button{
+        @apply focus:outline-none
+    }
 </style>
