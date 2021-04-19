@@ -4,6 +4,12 @@
             <h1>Todo List</h1>
         </div>
 
+        <div v-if="cardLoading" class="flex justify-center mb-6 px-8">
+            <div class="flex border border-green-200 w-full py-6 items-center justify-center shadow">
+                 <img class="w-6 animate-spin" src="icons/loading.svg" alt="">
+            </div> 
+        </div>
+
         <div v-for="todo in todos" v-bind:key="todo.id" class="mb-4">
             <div class="justify-center px-8">
                 <div class="shadow w-full p-2 px-4 rounded border-green-200 border space-y-1">
@@ -18,10 +24,16 @@
                     </div>  
                     <hr class="border border-green-200">
                     <div class="flex justify-between space-x-2 p-2">
-                        <button @click="deleteTodo(todo.id)">
+                        <button 
+                            class="focus:outline-none"
+                            @click="deleteTodo(todo.id)"
+                        >
                             <img class="h-6 opacity-80 hover:opacity-100" src="icons/red-remove.svg">
                         </button>
-                        <button>
+                        <button
+                            class="focus:outline-none"
+                            @click="completeTodo(todo.id)"
+                        >
                             <img class="h-6 opacity-80 hover:opacity-100" src="icons/green-checked.svg" alt="">
                         </button>
                     </div> 
@@ -39,9 +51,7 @@
     </div>
 </template>
 
-<script>
-    import { toRefs  } from 'vue';
-
+<script> 
 
     export default{ 
         props: {
@@ -53,15 +63,23 @@
 
         setup(props, {emit}){ 
 
+            const cardLoading = false;
+
             const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
             
             const deleteTodo = (todoID) => {
                 emit('delete-todo', todoID);
             }
 
+            const completeTodo = (todoID) => {
+                emit('complete-todo', todoID);
+            }
+
             return{
                options,
-               deleteTodo
+               deleteTodo,
+               completeTodo,
+               cardLoading
             }
         }
     }

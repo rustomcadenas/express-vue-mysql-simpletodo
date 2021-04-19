@@ -8,6 +8,9 @@
             <div>
                 <router-link to="/todo"> Todo </router-link>
             </div> 
+            <div>
+                <router-link to="/completed"> Completed </router-link>
+            </div>
         </div>
     </div>
     <router-view />

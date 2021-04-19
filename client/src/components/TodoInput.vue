@@ -12,10 +12,10 @@
         </div> 
         <div>
             <button 
-                class="hover:opacity-100 opacity-70 focus:outline-none"
+                class="hover:opacity-100 opacity-70 focus:outline-none mt-2"
                 @click="addNewTodo()"    
             >
-                <img class="h-8 mt-2" src="icons/green-right-arrow.svg" alt="">
+                <img class="h-8" src="icons/green-right-arrow.svg" alt="">
             </button>
         </div>
     </div>
@@ -35,7 +35,7 @@
             }
             
             const addNewTodo = () => {
-                if(!todo){
+                if(!todo.value){
                     return;
                 }else{
                     emit('create-todo', todo.value);

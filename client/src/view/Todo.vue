@@ -2,11 +2,12 @@
     <div id="outer">
         <div class="space-y-8">
             <TodoInput 
-                v-on:create-todo="addTodo($event)"
+                v-on:create-todo="addTodo($event)" 
             />
             <TodoCard 
                 :todos="Todos" 
                 v-on:delete-todo="deleteTodo($event)"
+                v-on:complete-todo="completeTodo($event)"
             />
         </div>
          
@@ -16,7 +17,7 @@
 <script> 
     import TodoInput from '../components/TodoInput.vue';
     import TodoCard from '../components/TodoCard.vue'; 
-    import axios from 'axios';
+    import axios from '../axios';
     import { ref, onMounted } from 'vue';
 
     export default{
@@ -29,11 +30,11 @@
                 const Todos = ref([]);
                 
                 const getTodos = async () => {
-                    Todos.value = await axios.get('http://localhost:3030/todos').then((response) => response.data);
+                    Todos.value = await axios.get('todos').then((response) => response.data);
                 };
 
                 const addTodo = newTodo => {
-                    axios.post('http://localhost:3030/todos', {
+                    axios.post('todos', {
                         name: newTodo
                     }).then(
                         getTodos()
@@ -41,7 +42,7 @@
                 }
 
                 const deleteTodo = (id) => {
-                    axios.delete(`http://localhost:3030/todos/${id}`)
+                    axios.delete(`todos/${id}`)
                     .then((response) => {
                         if(response.status == 200 ){ 
                          getTodos();
@@ -49,6 +50,17 @@
                             alert('Something went wrong!')
                         }
                     });
+                }
+
+                const completeTodo = (id) => {
+                    axios.put(`todos/${id}`)
+                    .then((response) => {
+                        if(response.status == 200){
+                            getTodos();
+                        }else{
+                            alert(response.data.message);
+                        }
+                    })
                 }
             
                 onMounted(() => {
@@ -59,7 +71,8 @@
                     Todos,
                     getTodos,
                     addTodo,
-                    deleteTodo
+                    deleteTodo,
+                    completeTodo
                 }
             } 
     } 

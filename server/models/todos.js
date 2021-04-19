@@ -26,7 +26,7 @@ Todo.create = (newTodo, result) => {
 
 Todo.getAll = result => {
     const query = `
-        select * from todos order by created_at desc
+        select * from todos where completed=0 order by created_at desc
     `;
     sql.query(query, (err, res) => {
         if(err){
@@ -85,5 +85,48 @@ Todo.remove = (todoID, result) => {
     })
 }
 
+Todo.setComplete = (todoID, result) => {
+    const query = `
+        update todos set completed=1 where id=?
+    `;
+
+    sql.query(query, todoID, (err, res) => {
+        if(err){
+            console.log(`Error: ${err}`)
+            result(err, null);
+            return;
+        }
+        if(res.affectedRows == 0){
+            console.log("not_found");
+            result({
+                message: 'Todo not found'
+            }, null);
+            return;
+        }
+        else{   
+            console.log('Updated: ', res);
+            result(null, res);
+            return
+        }
+    });
+}
+
+Todo.getCompleted = result => {
+    const query = `
+        select * from todos where completed=1 order by updated_at desc
+    `;
+    sql.query(query, (err, res) => {
+        if(err){
+            console.log(err);
+            result(err, null)
+            return
+        }else{
+            console.log(`completed: requested: `, res);
+            result(null, res);
+            return
+        }
+    });
+}
+ 
 
 module.exports = Todo;

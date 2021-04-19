@@ -8,8 +8,14 @@ module.exports = app => {
 
     //for api
     app.post('/todos', Todo.create);
+
     app.get('/todos', Todo.findAll);
     app.get('/todos/:id', Todo.findOne);
-    app.delete('/todos/:id', Todo.delete);
+    app.get('/completedtodos', Todo.findCompleted)
+    
+    
+    app.put('/todos/:id', Todo.setComplete);
+
+    app.delete('/todos/:id', Todo.delete); 
 
 }

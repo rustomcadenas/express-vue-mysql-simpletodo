@@ -55,15 +55,41 @@ exports.findOne = (req, res) => {
     });
 }
 
+exports.findCompleted = (req, res) => {
+    Todo.getCompleted((err, data) => {
+        if(err){
+            res.status(500).send({
+                type: 'error',
+                message: err.message
+            })
+        }else{
+            res.send(data);
+        }
+    });
+}
+
 exports.delete = (req, res) => {
 
     Todo.remove(req.params.id, (err, data) => {
         if(err){
-            res.status().send(err.message); 
+            res.status(500).send(err.message); 
         }else{
             res.send({
-                message: 'Customer Successfully Deleted'
+                message: 'Todo Successfully Deleted'
             }); 
         } 
     }); 
 }
+
+exports.setComplete = (req, res) => {
+    Todo.setComplete(req.params.id, (err, data) => {
+        if(err){
+            res.status(500).send(err.message);
+        }else{
+            res.send({
+                message: 'Todo Updated!'
+            });
+        }
+    });
+}
+ 
